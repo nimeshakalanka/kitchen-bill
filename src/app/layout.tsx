@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { ToastProvider } from "@/context/ToastContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,13 +18,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-[#FBF7F0]">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <footer className="py-4 text-center text-xs text-[#8D6E63] border-t border-[#1B5E20]/5 bg-white/40">
-          © {new Date().getFullYear()} Priya Dream Kitchen • Weligama, Sri Lanka
-        </footer>
+        <ToastProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <footer className="py-4 text-center text-xs text-[#8D6E63] border-t border-[#1B5E20]/5 bg-white/40">
+            © {new Date().getFullYear()} Priya Dream Kitchen • Weligama, Sri Lanka
+          </footer>
+        </ToastProvider>
       </body>
     </html>
   );

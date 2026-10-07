@@ -8,29 +8,37 @@ export interface InvoiceItem {
   total: number;
 }
 
+export type CustomerType = 'guest' | 'hotel';
+
 export interface CustomerInfo {
   name: string;
-  email: string;
-  phone: string;
-  address: string;
+  customerType?: CustomerType;
+  country?: string;
+  phone?: string;
+  numberOfGuests: number;
+  bookingDate: string;
+  bookingTime: string;
 }
+
+export type PaymentMethod = 'cash' | 'bank_transfer' | 'online';
+export type PaymentStatus = 'paid' | 'pending';
+export type DiscountType = 'fixed' | 'percentage';
 
 export interface Invoice {
   id: string;
   invoiceNumber: string;
   date: string;
-  dueDate: string;
   customer: CustomerInfo;
   items: InvoiceItem[];
   subtotal: number;
-  taxRate: number;
-  taxAmount: number;
-  discount: number;
+  discountType: DiscountType;
+  discountValue: number;
+  discountAmount: number;
   grandTotal: number;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
   notes: string;
   status: 'draft' | 'sent' | 'paid';
   createdAt: string;
   currency: string;
 }
-
-export type InvoiceFormData = Omit<Invoice, 'id' | 'createdAt' | 'subtotal' | 'taxAmount' | 'grandTotal'>;

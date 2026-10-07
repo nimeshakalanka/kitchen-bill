@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+@import "tailwindcss";
 
 :root {
   --background: #FBF7F0;
@@ -109,10 +109,26 @@ select:focus {
 
 /* Print styles */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
   header, nav, .no-print {
     display: none !important;
   }
   body {
     background: white !important;
+    color: #1a202c !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .print-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 }
