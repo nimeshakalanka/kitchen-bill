@@ -86,55 +86,30 @@ grant execute on function public.next_invoice_no() to authenticated, anon;
 alter table public.invoices enable row level security;
 alter table public.settings enable row level security;
 
--- Policies for invoices (Authenticated users only)
-create policy "Authenticated users can select invoices"
-  on public.invoices for select
-  to authenticated
-  using (true);
+-- Drop existing restrictive policies if present
+drop policy if exists "Authenticated users can select invoices" on public.invoices;
+drop policy if exists "Authenticated users can insert invoices" on public.invoices;
+drop policy if exists "Authenticated users can update invoices" on public.invoices;
+drop policy if exists "Authenticated users can delete invoices" on public.invoices;
 
-create policy "Authenticated users can insert invoices"
-  on public.invoices for insert
-  to authenticated
-  with check (true);
+drop policy if exists "Authenticated users can select settings" on public.settings;
+drop policy if exists "Authenticated users can insert settings" on public.settings;
+drop policy if exists "Authenticated users can update settings" on public.settings;
+drop policy if exists "Authenticated users can delete settings" on public.settings;
 
-create policy "Authenticated users can update invoices"
-  on public.invoices for update
-  to authenticated
+drop policy if exists "Allow public access to invoices" on public.invoices;
+drop policy if exists "Allow public access to settings" on public.settings;
+
+-- Allow access for anon and authenticated (App uses cookie auth)
+create policy "Allow public access to invoices"
+  on public.invoices for all
+  to anon, authenticated
   using (true)
   with check (true);
 
-create policy "Authenticated users can delete invoices"
-  on public.invoices for delete
-  to authenticated
-  using (true);
-
--- Policies for settings (Authenticated users only)
-create policy "Authenticated users can select settings"
-  on public.settings for select
-  to authenticated
-  using (true);
-
-create policy "Authenticated users can insert settings"
-  on public.settings for insert
-  to authenticated
-  with check (true);
-
-create policy "Authenticated users can update settings"
-  on public.settings for update
-  to authenticated
+create policy "Allow public access to settings"
+  on public.settings for all
+  to anon, authenticated
   using (true)
   with check (true);
 
-create policy "Authenticated users can delete settings"
-  on public.settings for delete
-  to authenticated
-  using (true);
-
--- NOTE FOR DEVELOPMENT / DEMO (OPTIONAL):
--- If you are testing the app in the browser before setting up Supabase Auth logins,
--- you can temporarily allow anon access by running the optional policies below:
---
--- create policy "Anon can select invoices" on public.invoices for select to anon using (true);
--- create policy "Anon can insert invoices" on public.invoices for insert to anon with check (true);
--- create policy "Anon can update invoices" on public.invoices for update to anon using (true) with check (true);
--- create policy "Anon can select settings" on public.settings for select to anon using (true);
